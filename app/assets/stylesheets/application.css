@@ -166,6 +166,18 @@ body {
   font-size: 10px;
 }
 
+/**** Devise ****/
+
+ul.hmenu {
+  list-style: none; 
+  margin: 0 0 2em;
+  padding: 0;
+}
+
+ul.hmenu li {
+  display: inline;  
+}
+
 /**** Isotope Filtering ****/
 
 .isotope-item {
@@ -282,5 +294,5 @@ body {
 }
 
 #auth-box {
-  display: none;
+  /*display: none;*/
 }

@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
+
   get 'bookshelf/index'
+  post 'bookshelf/get_books'
   match 'bookshelf', to: 'bookshelf#index', via: :all
   root :to => 'bookshelf#index'
 
   post 'goodreads/authorize'
-  post 'goodreads/populate_shelf'
+  get 'goodreads/populate_shelf'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

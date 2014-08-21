@@ -1,16 +1,14 @@
 $(function () {
 
-  $.post("/goodreads/populate_shelf", function(data) { 
-    populateShelf(data); 
+  $.post("/bookshelf/get_books", function(data) { 
+    populateShelf(JSON.parse(data)); 
   });
 
   function populateShelf(data) {
-    if (data == "null") {      
+    if (data == null || data.length == 0) {      
       var books_we_use = books_o;
-      var authBox = document.getElementById("auth-box");
-      authBox.style.display = "inline";
     } else {
-      var books_we_use = { books: JSON.parse(data) };
+      var books_we_use = { 'books': data };
     }
 
     // onload sort by author and display books
