@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821200621) do
+ActiveRecord::Schema.define(version: 20140822173506) do
 
   create_table "books", force: true do |t|
     t.integer  "user_id"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20140821200621) do
     t.datetime "updated_at"
     t.text     "goodreads_books"
     t.string   "goodreads_request_token"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

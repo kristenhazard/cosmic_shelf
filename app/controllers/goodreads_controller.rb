@@ -7,9 +7,6 @@ class GoodreadsController < ApplicationController
       Goodreads.configuration[:api_key],
       Goodreads.configuration[:api_secret],
       :site => 'http://www.goodreads.com')
-    #@temp = consumer.get_request_token
-    #current_user.goodreads_request_token = "#{consumer.get_request_token}"
-    #@temp2 = current_user.goodreads_request_token
     $request_token = consumer.get_request_token
     oauth_url = $request_token.authorize_url(:oauth_callback => goodreads_populate_shelf_url)
     redirect_to(oauth_url)

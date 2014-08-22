@@ -1,11 +1,18 @@
 <div pub-key="pub-31ccbcae-5e76-4eaa-82e4-70f61ba3aa41" sub-key="sub-d87710eb-4468-11e1-884a-cda464106799" ssl="off" origin="pubsub.pubnub.com" id="pubnub"></div>
 <script src="http://cdn.pubnub.com/pubnub-3.1.min.js"></script>
 
+<hr/>
+
 <ul class="hmenu">
   <%= render 'devise/registration_items' %>
   <%= render 'devise/login_items' %>
 </ul>
 
+<hr/>
+
+<%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+
+<hr/>
 
 <div id="auth-box">
   <% if current_user != nil && current_user.books.length == 0 %>

@@ -43,3 +43,7 @@ gem 'devise'
 gem 'goodreads'
 # For goodreads authentication
 gem 'oauth'
+
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+#gem 'omniauth-goodreads'
