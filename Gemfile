@@ -44,6 +44,6 @@ gem 'goodreads'
 # For goodreads authentication
 gem 'oauth'
 
-gem 'omniauth-facebook'
+gem 'omniauth'
 gem 'omniauth-twitter'
 #gem 'omniauth-goodreads'
