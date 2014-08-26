@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
 <<<<<<< HEAD
+<<<<<<< HEAD
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -20,6 +21,8 @@ class User < ActiveRecord::Base
       user.name = auth.info.name 
     end
 =======
+=======
+>>>>>>> FETCH_HEAD
   # :lockable, :timeoutable
   devise :database_authenticatable, :registerable, :confirmable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
@@ -70,6 +73,9 @@ class User < ActiveRecord::Base
 
   def email_verified?
     self.email && self.email !~ TEMP_EMAIL_REGEX
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
   end
 end

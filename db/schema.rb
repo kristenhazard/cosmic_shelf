@@ -12,7 +12,11 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140826180001) do
+=======
+ActiveRecord::Schema.define(version: 20140822204116) do
+>>>>>>> FETCH_HEAD
 =======
 ActiveRecord::Schema.define(version: 20140822204116) do
 >>>>>>> FETCH_HEAD
@@ -59,8 +63,11 @@ ActiveRecord::Schema.define(version: 20140822204116) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.string   "provider"
     t.string   "uid"
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
   end
