@@ -1,5 +1,4 @@
 $(function () {
-
   $.post("/bookshelf/get_books", function(data) { 
     populateShelf(JSON.parse(data)); 
   });

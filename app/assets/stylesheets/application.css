@@ -168,13 +168,22 @@ body {
 
 /**** Devise ****/
 
-ul.hmenu {
-  list-style: none; 
-  margin: 0 0 2em;
-  padding: 0;
+.devise-menu {
+  border-top:0;
+  border-bottom:3px; 
+  border-left:0;
+  border-right:0;
+  border-color:white;
+  border-style:solid;
+  padding:10px;
+  margin:0;
 }
 
-ul.hmenu li {
+ul.devise-menu {
+  list-style: none; 
+}
+
+ul.devise-menu li {
   display: inline;  
 }
 
@@ -294,5 +303,12 @@ ul.hmenu li {
 }
 
 #auth-box {
-  /*display: none;*/
+  border-top:0;
+  border-bottom:3px; 
+  border-left:0;
+  border-right:0;
+  border-color:white;
+  border-style:solid;
+  padding:10px;
+  margin:0;
 }
