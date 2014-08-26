@@ -1,14 +1,5 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-
-  devise_scope :user do
-    #get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
-    #get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-  end
-=======
-  #devise_for :users
->>>>>>> FETCH_HEAD
 
   get 'bookshelf/index'
   post 'bookshelf/get_books'
@@ -17,9 +8,6 @@ Rails.application.routes.draw do
 
   post 'goodreads/authorize'
   get 'goodreads/populate_shelf'
-
-  devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
-  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

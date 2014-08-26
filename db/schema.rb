@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140826180001) do
-=======
-ActiveRecord::Schema.define(version: 20140822204116) do
->>>>>>> FETCH_HEAD
 
   create_table "books", force: true do |t|
     t.integer  "user_id"
@@ -58,11 +54,8 @@ ActiveRecord::Schema.define(version: 20140822204116) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-<<<<<<< HEAD
     t.string   "provider"
     t.string   "uid"
-=======
->>>>>>> FETCH_HEAD
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

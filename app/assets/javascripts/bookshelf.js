@@ -1,4 +1,4 @@
-$(function () {
+$(document).on("page:load ready", function() { 
   $.post("/bookshelf/get_books", function(data) { 
     populateShelf(JSON.parse(data)); 
   });
