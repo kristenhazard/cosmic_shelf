@@ -45,5 +45,5 @@ gem 'goodreads'
 gem 'oauth'
 
 gem 'omniauth'
+gem 'omniauth-facebook'
 gem 'omniauth-twitter'
-#gem 'omniauth-goodreads'

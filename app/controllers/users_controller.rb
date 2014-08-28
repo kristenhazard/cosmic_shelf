@@ -14,6 +14,15 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/:id.:format
   def update
     # authorize! :update, @user
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+
+    # custom logic
+    if params[:user][:password].present?
+      result = resource.update_with_password(params[resource_name])
+    else
+      result = resource.update_without_password(params[resource_name])
+    end
+
     respond_to do |format|
       if @user.update(user_params)
         sign_in(@user == current_user ? @user : current_user, :bypass => true)

@@ -1,16 +1,8 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-<<<<<<< HEAD
   config.omniauth :facebook, "847873955223219", "86a012e71b3957987155ae2a7b424e16"
-<<<<<<< HEAD
   config.omniauth :twitter, "9fXTDpjrM7osBo10w64i1h5Aw", "UYrlwJsNHkl8T9rysJpvFqtwgL11PIlNLwKRKXADCxrMsup2LS"
-=======
-  #config.omniauth :twitter, "9fXTDpjrM7osBo10w64i1h5Aw", "UYrlwJsNHkl8T9rysJpvFqtwgL11PIlNLwKRKXADCxrMsup2LS"
-=======
-  config.omniauth :twitter, "9fXTDpjrM7osBo10w64i1h5Aw", "UYrlwJsNHkl8T9rysJpvFqtwgL11PIlNLwKRKXADCxrMsup2LS"
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
 
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing

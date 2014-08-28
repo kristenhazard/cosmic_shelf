@@ -1,24 +1,13 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-
+  devise_for :users, :controllers => { 
+    omniauth_callbacks: 'custom_devise_controllers/omniauth_callbacks',
+    registrations: 'custom_devise_controllers/registrations' }
+    
   devise_scope :user do
-    #get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
-    #get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+    get "users/verify_email" => 'custom_devise_controllers/registrations#verify_email', :as => :verify_user_email
+    post "users/update_email" => 'custom_devise_controllers/registrations#update_email', :as => :update_user_email
   end
-=======
-  #devise_for :users
->>>>>>> FETCH_HEAD
-=======
-  #devise_for :users
->>>>>>> FETCH_HEAD
 
->>>>>>> FETCH_HEAD
   get 'bookshelf/index'
   post 'bookshelf/get_books'
   match 'bookshelf', to: 'bookshelf#index', via: :all
