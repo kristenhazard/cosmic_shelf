@@ -1,30 +1,50 @@
 $(document).on("page:load ready", function() { 
-  $.post("/bookshelf/get_books", function(data) { 
-    buildBookshelf(JSON.parse(data)); 
+  $.post("/bookshelf/get_books", function(user_books) { 
+    buildBookshelf(JSON.parse(user_books)); 
   });
 
-  function buildBookshelf(data) {
-    if (data == null || data.length == 0) {      
-      var books_we_use = books_o;
+  function buildBookshelf(user_books) {
+    // We use the user_books if available, otherwise we use the default_books
+    if (user_books == null || user_books.length == 0) {      
+      var books_we_use = default_books;
     } else {
-      var books_we_use = { 'books': data };
+      var books_we_use = { 'books': user_books };
     }
 
-    // onload sort by author and display books
-    defaultSort();
-    displayBooks();
-    
-    // create array for the sort types.
-    var sortTypes = new Array(sortTitle, sortGenre, sortPubDate, sortAuthor);
-    var currentSortType = 0;
+    //
+    var sortTypes = new Array(sortAuthor, sortTitle, sortGenre, sortPubDate);
+    var AUTHOR_SORT_TYPE = 0;
+    var TITLE_SORT_TYPE = 1;
+    var GENRE_SORT_TYPE = 2;
+    var PUBDATE_SORT_TYPE = 3;
+
+    // 
+    createBookDivs(books_we_use["books"]);
+    triggerIsotope();
+    var currentSortType;
+    sortAuthor();
+
+    function createBookDivs(books_to_load) {
+      //$('.bookshelf').empty();
+      $.each(books_to_load, function(index, book) { 
+        $new_div = $(document.createElement("div"))
+                    .addClass("book")
+                    .attr('data-author', book.author)
+                    .attr('data-genre', book.genre)
+                    .attr('data-pubdate', book.published_date)
+                    .attr('data-title', book.title)
+                    .appendTo($('.bookshelf'));
+        $(document.createElement("img"))
+          .attr({ src: book.cover_url, title: book.title })
+          .appendTo($new_div);
+      });
+    }
 
     function triggerIsotope() {
       $('.bookshelf').isotope({
-        // options
         itemSelector : '.book',
         layoutMode : 'fitRows',
         getSortData : {
-          // ...
           author : function ( $elem ) {
             return $($elem).attr('data-author');
           },
@@ -41,95 +61,52 @@ $(document).on("page:load ready", function() {
       });
     }
 
-    function displayBooks() {
-      var $bookshelf = $('.bookshelf');
-      var $book = $('.book');
-      $.each(books_we_use["books"], function(index, book) { 
-        $new_div = $(document.createElement("div"))
-                    .addClass("book")
-                    .attr('data-author', book.author)
-                    .attr('data-genre', book.genre)
-                    .attr('data-pubdate', book.published_date)
-                    .attr('data-title', book.title)
-                    .appendTo($bookshelf);
-        $(document.createElement("img"))
-          .attr({ src: book.cover_url, title: book.title })
-          .appendTo($new_div);
-      });
-      
-      triggerIsotope();
-    }
-
-    function displayFilteredBooks(filteredBooks) {
-        var $bookshelf = $('.bookshelf');
-        var $book = $('.book');
-        $('.bookshelf').empty();
-        $.each(filteredBooks, function(index, book) { 
-          $new_div = $(document.createElement("div"))
-                      .addClass("book")
-                      .attr('data-author', book.author)
-                      .attr('data-genre', book.genre)
-                      .attr('data-pubdate', book.published_date)
-                      .attr('data-title', book.title)
-                      .appendTo($bookshelf);
-          $(document.createElement("img"))
-            .attr({ src: book.cover_url, title: book.title })
-            .appendTo($new_div);
-        });
-      
-        triggerIsotope();
-    }
-    
-    function defaultSort() {
-      books_we_use.books.sort(function (a, b) {
-        a = a.author,
-        b = b.author;
-        return a.localeCompare(b);
-      });
-    }
-
     function sortAuthor() {
       $('.bookshelf').isotope({ sortBy : "author" });
       AuthorSortIcon();
+      currentSortType = AUTHOR_SORT_TYPE;
       return false;
-    };
+    }
 
     function sortTitle() {
       $('.bookshelf').isotope({ sortBy : "title" });
       TitleSortIcon();
+      currentSortType = TITLE_SORT_TYPE;
       return false;
-    };
+    }
 
     function sortGenre() {
       $('.bookshelf').isotope({ sortBy : "genre" });
       GenreSortIcon();
+      currentSortType = GENRE_SORT_TYPE;
       return false;
-    };
+    }
 
     function sortPubDate() {
       $('.bookshelf').isotope({ sortBy : "pubdate" });
       PubDateSortIcon();
+      currentSortType = PUBDATE_SORT_TYPE;
       return false;
-    };
+    }
 
     function sortByTypes() {
-      var i = currentSortType;
       if (currentSortType == sortTypes.length - 1) {
         currentSortType = 0;
       } else {
-        currentSortType += 1;
+        currentSortType++;
       }
-      return sortTypes[i]();
-    };
+      return sortTypes[currentSortType]();
+    }
 
     function showBook() {
-      var book = books_we_use["books"][9];
+      var book = $('.bookshelf').find('.first');
+      //var book = books_we_use["books"][9];
       $('#book-detail-author').text(book.author);
       $('#book-detail-genre').text(book.genre);
       $('#book-detail-pubdate').text(book.published_date);
       $('#book-detail-title').text(book.title);
       $('#book-detail-description').text(book.description);
-      $('#book-detail-cover').find('img')[0].src = book.cover_url;
+      //$('#book-detail-cover').find('img')[0].src = book.cover_url;
       $('#book-detail').fadeToggle();
     }
 
@@ -148,11 +125,12 @@ $(document).on("page:load ready", function() {
       $('#book-detail').fadeOut('slow');
     }
     
-    function swipeShelf() {
-      var $bookshelf = $('.bookshelf')
-      var $first_five_divs = $('div.book:lt(5)');
-      $('.bookshelf').isotope( 'remove', $first_five_divs );
-      $first_five_divs.appendTo($bookshelf);
+    function cycleShelf() {
+      var $bookshelf = $('.bookshelf');
+      //var $sortedItems = $bookshelf.data('isotope').$filteredAtoms;
+      var $first_seven_divs = $('div.book:lt(7)');
+      $bookshelf.append($first_seven_divs);
+      $bookshelf.isotope('reloadItems')
     }
     
     $('#sort-icon').click(function () {
@@ -180,7 +158,7 @@ $(document).on("page:load ready", function() {
     });
 
     $('#swipe-test').click(function () {
-      swipeShelf();
+      cycleShelf();
     });
 
     $('#show-book').click(function () {
@@ -204,7 +182,8 @@ $(document).on("page:load ready", function() {
       $('#search-detail').fadeOut('slow');
       $('#search-detail-termBox-term').text('');
       var booksFiltered = filterByAuthor(books_we_use, filterForAuthor);
-      displayFilteredBooks(booksFiltered);
+      createBookDivs(booksFiltered);
+      triggerIsotope();
     });
 
     function filterByAuthor(allBooks, filterOfAuthor) {
@@ -241,6 +220,24 @@ $(document).on("page:load ready", function() {
       var src = $('#sort-icon-title').attr("src").replace("_selected.png", ".png");
       $('#sort-icon-title').attr("src", src);
     }
+
+    function TitleSortIcon() {
+      if ($('#sort-icon-title').attr("src").indexOf("_selected") >= 1) {
+        return;
+      }
+      
+      /* set sort icon selected state */
+      var src = $('#sort-icon-title').attr("src").replace(".png", "_selected.png");
+      $('#sort-icon-title').attr("src", src);
+        
+      /* clear other sort icon selected state */
+      var src = $('#sort-icon-author').attr("src").replace("_selected.png", ".png");
+      $('#sort-icon-author').attr("src", src);
+      var src = $('#sort-icon-genre').attr("src").replace("_selected.png", ".png");
+      $('#sort-icon-genre').attr("src", src);
+      var src = $('#sort-icon-pubdate').attr("src").replace("_selected.png", ".png");
+      $('#sort-icon-pubdate').attr("src", src);
+    }
   
     function GenreSortIcon() {
       if ($('#sort-icon-genre').attr("src").indexOf("_selected") >= 1) {
@@ -276,24 +273,6 @@ $(document).on("page:load ready", function() {
       $('#sort-icon-genre').attr("src", src);
       var src = $('#sort-icon-title').attr("src").replace("_selected.png", ".png");
       $('#sort-icon-title').attr("src", src);
-    }
-    
-    function TitleSortIcon() {
-      if ($('#sort-icon-title').attr("src").indexOf("_selected") >= 1) {
-        return;
-      }
-      
-      /* set sort icon selected state */
-      var src = $('#sort-icon-title').attr("src").replace(".png", "_selected.png");
-      $('#sort-icon-title').attr("src", src);
-        
-      /* clear other sort icon selected state */
-      var src = $('#sort-icon-author').attr("src").replace("_selected.png", ".png");
-      $('#sort-icon-author').attr("src", src);
-      var src = $('#sort-icon-genre').attr("src").replace("_selected.png", ".png");
-      $('#sort-icon-genre').attr("src", src);
-      var src = $('#sort-icon-pubdate').attr("src").replace("_selected.png", ".png");
-      $('#sort-icon-pubdate').attr("src", src);
     }
 
     /* LEAP MOTION STUFF EVERYTHING BELOW HERE */
@@ -354,7 +333,7 @@ $(document).on("page:load ready", function() {
         swipeLeftCount++;
         if (swipeLeftCount >= SWIPE_LEFT_THRESHOLD) { 
           swipeLeftCount = 0;
-          swipeShelf(); // INTERACTS WITH COSMIC SHELF 
+          cycleShelf(); // INTERACTS WITH COSMIC SHELF 
           console.log("left"); // SWIPE LEFT DETECTED 
         }
       } else { // Otherwise must be positive direction => moving left to right => swipe right

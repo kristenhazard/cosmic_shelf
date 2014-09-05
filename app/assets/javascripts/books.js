@@ -1,4 +1,4 @@
-var books_o = {
+var default_books = {
   "books":
   [
     {
