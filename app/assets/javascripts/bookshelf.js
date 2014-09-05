@@ -1,9 +1,9 @@
 $(document).on("page:load ready", function() { 
   $.post("/bookshelf/get_books", function(data) { 
-    populateShelf(JSON.parse(data)); 
+    buildBookshelf(JSON.parse(data)); 
   });
 
-  function populateShelf(data) {
+  function buildBookshelf(data) {
     if (data == null || data.length == 0) {      
       var books_we_use = books_o;
     } else {
@@ -45,7 +45,6 @@ $(document).on("page:load ready", function() {
       var $bookshelf = $('.bookshelf');
       var $book = $('.book');
       $.each(books_we_use["books"], function(index, book) { 
-        console.log(index + ': ' + book); 
         $new_div = $(document.createElement("div"))
                     .addClass("book")
                     .attr('data-author', book.author)
@@ -66,7 +65,6 @@ $(document).on("page:load ready", function() {
         var $book = $('.book');
         $('.bookshelf').empty();
         $.each(filteredBooks, function(index, book) { 
-          //console.log(index + ': ' + book); 
           $new_div = $(document.createElement("div"))
                       .addClass("book")
                       .attr('data-author', book.author)
@@ -201,7 +199,6 @@ $(document).on("page:load ready", function() {
       $('#search-detail-termBox-term').text('kingsolver');
     });
 
-
     // search
     $('#search-detail-icon').click(function () {
       $('#search-detail').fadeOut('slow');
@@ -227,39 +224,6 @@ $(document).on("page:load ready", function() {
       "cover_url": new RegExp('(.*?)', 'gi')
     };
 
-    // LISTEN FOR MESSAGES
-    PUBNUB.subscribe({
-      channel: "cosmic_book_shelf",      // CONNECT TO THIS CHANNEL.
-      error: function () {        // LOST CONNECTION (auto reconnects)
-        alert("Connection Lost. Will auto-reconnect when Online.")
-      },
-      callback: function (message) { // RECEIVED A MESSAGE.
-        console.log(message);
-        if (message != "Hi from PubNub.") {
-          //var gestures = message.gestures;
-          var gesture = message.Gestures[0].Gesture;
-          switch (gesture) {
-            case "SwipeToRight":
-              sortByTypes();
-              break;
-            case "SwipeToLeft":
-              swipeShelf();
-              break;
-            case "Circle":
-              showBook();
-              break;
-          }
-        }
-      },
-      connect: function () {        // CONNECTION ESTABLISHED.
-        // SEND MESSAGE
-        PUBNUB.publish({
-          channel: "cosmic_book_shelf",
-          message: "Hi from PubNub."
-        })
-      }
-    })
-    
     function AuthorSortIcon() {
       if ($('#sort-icon-author').attr("src").indexOf("_selected") >= 1) {
         return;
@@ -331,5 +295,118 @@ $(document).on("page:load ready", function() {
       var src = $('#sort-icon-pubdate').attr("src").replace("_selected.png", ".png");
       $('#sort-icon-pubdate').attr("src", src);
     }
+
+    /* LEAP MOTION STUFF EVERYTHING BELOW HERE */
+
+    // Every FRAME_RATE frames we check for hand position.
+    var FRAME_RATE = 10
+
+    /* The Leap Motion will detect GESTURE_THRESHOLD many gestures before
+     * it notifies the Cosmic Shelf that it has noticed a gesture
+     * That means, the leap motion would have to detect SWIPE_LEFT_THRESHOLD=40 
+     * left-swipe gestures before it actually signals the Cosmic Shelf. These *THRESHOLD
+     * constants essentially change the sensitivity the Cosmic Shelf has
+     * for the Leap Motion. The higher the *THRESHOLD number, the less
+     * sensitive the Cosmic Shelf will be for gestures, which means 
+     * you will have to do larger/more obvious gestures. If you want
+     * the Cosmic Shelf to detect slighter/less obvious gestures, turn the *THRESHOLD
+     * number down. 
+     */ 
+    var SWIPE_LEFT_THRESHOLD = 40;
+    var SWIPE_RIGHT_THRESHOLD = 40;
+    var CIRCLE_FINGER_THRESHOLD = 60;
+
+    /* These count variables go up each time a gesture is registered.
+     * For example, swipeLeftCount will go up by one each time a leftward
+     * swipe is registered. Once it reaches SWIPE_LEFT_THRESHOLD, it will
+     * signal the Cosmic Shelf (it waits to detect enough swipeLefts to
+     * justify notifying the Cosmic Shelf).
+     */
+    var swipeLeftCount = 0;
+    var swipeRightCount = 0;
+    var circleFingerCount = 0;
+
+    /* MIN_SWIPE_DISTANCE is the minimum distance your hand must move
+     * before it registers as ONE swipe.
+     */
+    var MIN_SWIPE_DISTANCE = 30;
+
+    /* We have detected a circle finger motion. If it continues
+     * long enough to reach the threshold, it will interact
+     * with the Cosmic Shelf.
+     */
+    function onCircleFinger() {
+      circleFingerCount++;
+      if (circleFingerCount >= CIRCLE_FINGER_THRESHOLD) {
+        circleFingerCount = 0;
+        showBook(); // INTERACTS WITH COSMIC SHELF
+        console.log("circle"); // CIRCLE FINGER DETECTED
+      }
+    }
+
+    /* We have detected a swipe motion. If it continues
+     * long enough to reach the threshold, it will interact
+     * with the Cosmic Shelf.
+     */
+    function onSwipe(curHand) {
+      var direction = curHand.palmVelocity[0];
+      if (direction < 0) { // Negative direction => moving right to left => swipe left
+        swipeLeftCount++;
+        if (swipeLeftCount >= SWIPE_LEFT_THRESHOLD) { 
+          swipeLeftCount = 0;
+          swipeShelf(); // INTERACTS WITH COSMIC SHELF 
+          console.log("left"); // SWIPE LEFT DETECTED 
+        }
+      } else { // Otherwise must be positive direction => moving left to right => swipe right
+        swipeRightCount++;
+        if (swipeRightCount >= SWIPE_RIGHT_THRESHOLD) {
+          swipeRightCount = 0;
+          sortByTypes(); // INTERACTS WITH COSMIC SHELF
+          console.log("right"); // SWIPE RIGHT DETECTED
+        }
+      }
+    }
+
+    // prevHand.palmVelocity[0] => The [0] acesses the x-velocity
+    // prevHand.palmPosition[0] => The [0] acesses the x-position
+    function detectSwipe(prevHand, curHand) {
+      // If the either hand objects are null, no swipe, return
+      if (prevHand == null  || curHand == null) return; 
+
+      // PrevHand and curHand must have the same x-velocity sign (sign being positive or negative), 
+      // otherwise that would imply that the hand changed direction. That doesn't constitute a full swipe.
+      // If (prevHand's x-velocity * curHand's x-velocity) equals a negative number,
+      // that would imply their x-velocity signs were different, and thus no swipe. That means we return.
+      if (prevHand.palmVelocity[0] * curHand.palmVelocity[0] < 0) return; 
+
+      // Now we check the x-distance between prevHand and curHand. It must be at least 
+      // MIN_SWIPE_DISTANCE to count as a swipe. If it isn't, we return.
+      if (Math.abs(prevHand.palmPosition[0] - curHand.palmPosition[0]) < MIN_SWIPE_DISTANCE) return;
+      onSwipe(curHand);
+    }
+
+    var prevHand = null;
+    var curHand = null;
+    var options = { enableGestures: true }; 
+
+    Leap.loop(options, function(frame) {
+      // Every ten frames we check the velocity and position of the hand and then compare it with the previous stored velocity and position
+      if (frame.id % FRAME_RATE == 0) { 
+        prevHand = curHand;
+        curHand = frame.hands[0];
+      }
+
+      var gestures = frame.gestures;
+      if (gestures.length != 0) { // Did we detect a gesture?
+        var gesture = gestures[0];
+        if (gesture.type == "circle") { // Was the gesture a circle finger gesture?
+          onCircleFinger();
+        } else { // If it wasn't a circle finger, was it a swipe?
+          detectSwipe(prevHand, curHand);
+        } 
+      } else {
+        detectSwipe(prevHand, curHand);
+      }
+    });
   }
 });

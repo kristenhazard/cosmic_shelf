@@ -1,4 +1,6 @@
 class CustomDeviseControllers::RegistrationsController < Devise::RegistrationsController
+  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy, :verify_email, :update_email]
+
   def verify_email
     flash[:notice] = ""
   end
@@ -15,9 +17,4 @@ class CustomDeviseControllers::RegistrationsController < Devise::RegistrationsCo
       render "verify_email"
     end
   end
-
-  protected
-    def after_sign_in_path_for(resource)
-      verify_user_email_path
-    end
 end

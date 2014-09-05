@@ -15,6 +15,7 @@ class GoodreadsController < ApplicationController
   def populate_shelf
     access_token = $request_token.get_access_token
     @goodreads_client = Goodreads.new(oauth_token: access_token)
+    puts "access_token=" + "#{access_token}"
     client_id = @goodreads_client.user_id
     shelf = @goodreads_client.shelf(client_id, 'all')
     shelf[:books].each do |goodreads_book_profile|
