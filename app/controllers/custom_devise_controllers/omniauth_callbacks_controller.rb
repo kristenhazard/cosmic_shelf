@@ -6,8 +6,6 @@ class CustomDeviseControllers::OmniauthCallbacksController < Devise::OmniauthCal
 
         if @user.persisted?
           sign_in_and_redirect @user, event: :authentication
-          #sign_in @user, event: :authentication
-          #redirect_to after_sign_in_path_for(@user)
           set_flash_message(:notice, :success, kind: "#{provider}".capitalize) if is_navigational_format?
         else
           session["devise.#{provider}_data"] = env["omniauth.auth"]
@@ -19,5 +17,14 @@ class CustomDeviseControllers::OmniauthCallbacksController < Devise::OmniauthCal
 
   [:twitter, :facebook].each do |provider|
     provides_callback_for provider
+  end
+
+  private
+  def after_sign_in_path_for(resource)
+    if resource.email_verified?
+      super resource
+    else
+      finish_signup_path(resource)
+    end
   end
 end

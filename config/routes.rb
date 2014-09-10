@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users, :controllers => { 
-    omniauth_callbacks: 'custom_devise_controllers/omniauth_callbacks',
-    registrations: 'custom_devise_controllers/registrations' }
+  devise_for :users, :controllers => { omniauth_callbacks: 'custom_devise_controllers/omniauth_callbacks' }
+
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
     
   devise_scope :user do
     get "users/verify_email" => 'custom_devise_controllers/registrations#verify_email', :as => :verify_user_email
