@@ -31,7 +31,9 @@ $(document).on("page:load ready", function() {
                     .addClass("book")
                     .attr('data-author', book.author)
                     .attr('data-genre', book.genre)
+                    .attr('data-description', book.description)
                     .attr('data-pubdate', book.published_date)
+                    .attr('data-cover', book.cover_url)
                     .attr('data-title', book.title)
                     .appendTo($('.bookshelf'));
         $(document.createElement("img"))
@@ -89,7 +91,7 @@ $(document).on("page:load ready", function() {
       return false;
     }
 
-    function sortByTypes() {
+    function cycleSortPriority() {
       if (currentSortType == sortTypes.length - 1) {
         currentSortType = 0;
       } else {
@@ -98,16 +100,19 @@ $(document).on("page:load ready", function() {
       return sortTypes[currentSortType]();
     }
 
+
     function showBook() {
-      var book = $('.bookshelf').find('.first');
-      //var book = books_we_use["books"][9];
-      $('#book-detail-author').text(book.author);
-      $('#book-detail-genre').text(book.genre);
-      $('#book-detail-pubdate').text(book.published_date);
-      $('#book-detail-title').text(book.title);
-      $('#book-detail-description').text(book.description);
-      //$('#book-detail-cover').find('img')[0].src = book.cover_url;
-      $('#book-detail').fadeToggle();
+      curBook = $('.bookshelf').data('isotope').filteredItems[0].element;
+      $('#book-detail-author').text(curBook.getAttribute('data-author'));
+      $('#book-detail-genre').text(curBook.getAttribute('data-genre'));
+      $('#book-detail-pubdate').text(curBook.getAttribute('data-pubdate'));
+      $('#book-detail-title').text(curBook.getAttribute('data-title'));
+      $('#book-detail-description').text(curBook.getAttribute('data-description'));
+      var cover = document.createElement("img");
+      cover.src = curBook.getAttribute('data-cover');
+      $('#book-detail-cover').empty();
+      $('#book-detail-cover').append(cover);
+      $('#book-detail').fadeToggle();        
     }
 
     function showSearch() {
@@ -125,16 +130,23 @@ $(document).on("page:load ready", function() {
       $('#book-detail').fadeOut('slow');
     }
     
-    function cycleShelf() {
-      var $bookshelf = $('.bookshelf');
-      //var $sortedItems = $bookshelf.data('isotope').$filteredAtoms;
-      var $first_seven_divs = $('div.book:lt(7)');
-      $bookshelf.append($first_seven_divs);
-      $bookshelf.isotope('reloadItems')
+    var NUM_BOOKS_IN_ROW = 7;
+    function shiftShelfUpward() {
+      var numBooksInShelf = $('.bookshelf').data('isotope').filteredItems.length;
+      var numBooksToShift = numBooksInShelf > NUM_BOOKS_IN_ROW ? NUM_BOOKS_IN_ROW : 0;
+      var itemsToAppend = new Array;
+      for (var i = 0; i < numBooksToShift; i++) {
+        console.log(i);
+        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
+        itemsToAppend.push(element);
+        element.remove();
+      }
+      $('.bookshelf').isotope('reloadItems').isotope();
+      $('.bookshelf').append(itemsToAppend).isotope('appended', itemsToAppend);
     }
     
     $('#sort-icon').click(function () {
-      sortByTypes();
+      cycleSortPriority();
     });
 
     $('#sort-icon-author').click(function () {
@@ -155,10 +167,6 @@ $(document).on("page:load ready", function() {
     $('#sort-icon-pubdate').click(function () {
       sortPubDate();
       PubDateSortIcon();
-    });
-
-    $('#swipe-test').click(function () {
-      cycleShelf();
     });
 
     $('#show-book').click(function () {
@@ -310,6 +318,8 @@ $(document).on("page:load ready", function() {
      */
     var MIN_SWIPE_DISTANCE = 30;
 
+    var shouldShowBook = true;
+
     /* We have detected a circle finger motion. If it continues
      * long enough to reach the threshold, it will interact
      * with the Cosmic Shelf.
@@ -318,7 +328,13 @@ $(document).on("page:load ready", function() {
       circleFingerCount++;
       if (circleFingerCount >= CIRCLE_FINGER_THRESHOLD) {
         circleFingerCount = 0;
-        showBook(); // INTERACTS WITH COSMIC SHELF
+        if (shouldShowBook) {
+          showBook();
+          shouldShowBook = false;
+        } else {
+          hideBook();
+          shouldShowBook = true;
+        }
         console.log("circle"); // CIRCLE FINGER DETECTED
       }
     }
@@ -333,14 +349,14 @@ $(document).on("page:load ready", function() {
         swipeLeftCount++;
         if (swipeLeftCount >= SWIPE_LEFT_THRESHOLD) { 
           swipeLeftCount = 0;
-          cycleShelf(); // INTERACTS WITH COSMIC SHELF 
+          shiftShelfUpward(); // INTERACTS WITH COSMIC SHELF 
           console.log("left"); // SWIPE LEFT DETECTED 
         }
       } else { // Otherwise must be positive direction => moving left to right => swipe right
         swipeRightCount++;
         if (swipeRightCount >= SWIPE_RIGHT_THRESHOLD) {
           swipeRightCount = 0;
-          sortByTypes(); // INTERACTS WITH COSMIC SHELF
+          cycleSortPriority(); // INTERACTS WITH COSMIC SHELF
           console.log("right"); // SWIPE RIGHT DETECTED
         }
       }
