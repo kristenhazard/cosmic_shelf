@@ -12,11 +12,12 @@ $(document).on("page:load ready", function() {
     }
 
     //
-    var sortTypes = new Array(sortAuthor, sortTitle, sortGenre, sortPubDate);
+    var sortTypes = new Array(sortAuthor, sortTitle, sortGenre, sortPubDate, sortHidden);
     var AUTHOR_SORT_TYPE = 0;
     var TITLE_SORT_TYPE = 1;
     var GENRE_SORT_TYPE = 2;
     var PUBDATE_SORT_TYPE = 3;
+    var HIDDEN_SORT_TYPE = 4;
 
     // 
     createBookDivs(books_we_use["books"]);
@@ -25,7 +26,6 @@ $(document).on("page:load ready", function() {
     sortAuthor();
 
     function createBookDivs(books_to_load) {
-      //$('.bookshelf').empty();
       $.each(books_to_load, function(index, book) { 
         $new_div = $(document.createElement("div"))
                     .addClass("book")
@@ -35,6 +35,7 @@ $(document).on("page:load ready", function() {
                     .attr('data-pubdate', book.published_date)
                     .attr('data-cover', book.cover_url)
                     .attr('data-title', book.title)
+                    .attr('data-hidden', '0')
                     .appendTo($('.bookshelf'));
         $(document.createElement("img"))
           .attr({ src: book.cover_url, title: book.title })
@@ -58,12 +59,18 @@ $(document).on("page:load ready", function() {
           },
           title : function ( $elem ) {
             return $($elem).attr('data-title');
+          },
+          hidden : function ( $elem ) {
+            return $($elem).attr('data-hidden');
           }
         }
       });
     }
 
+    var mostRecentSort = 'author';
+
     function sortAuthor() {
+      mostRecentSort = 'author';
       $('.bookshelf').isotope({ sortBy : "author" });
       AuthorSortIcon();
       currentSortType = AUTHOR_SORT_TYPE;
@@ -71,6 +78,7 @@ $(document).on("page:load ready", function() {
     }
 
     function sortTitle() {
+      mostRecentSort = 'title';
       $('.bookshelf').isotope({ sortBy : "title" });
       TitleSortIcon();
       currentSortType = TITLE_SORT_TYPE;
@@ -78,6 +86,7 @@ $(document).on("page:load ready", function() {
     }
 
     function sortGenre() {
+      mostRecentSort = 'genre';
       $('.bookshelf').isotope({ sortBy : "genre" });
       GenreSortIcon();
       currentSortType = GENRE_SORT_TYPE;
@@ -85,14 +94,22 @@ $(document).on("page:load ready", function() {
     }
 
     function sortPubDate() {
+      mostRecentSort = 'pubdate';
       $('.bookshelf').isotope({ sortBy : "pubdate" });
       PubDateSortIcon();
       currentSortType = PUBDATE_SORT_TYPE;
       return false;
     }
 
+    function sortHidden() {
+      mostRecentSort = 'hidden';
+      $('.bookshelf').isotope({ sortBy : "hidden" });
+      currentSortType = HIDDEN_SORT_TYPE;
+      return false;
+    }
+
     function cycleSortPriority() {
-      if (currentSortType == sortTypes.length - 1) {
+      if (currentSortType == sortTypes.length - 2 || currentSortType == HIDDEN_SORT_TYPE) {
         currentSortType = 0;
       } else {
         currentSortType++;
@@ -133,18 +150,31 @@ $(document).on("page:load ready", function() {
     var NUM_BOOKS_IN_ROW = 7;
     function shiftShelfUpward() {
       var numBooksInShelf = $('.bookshelf').data('isotope').filteredItems.length;
+
+      if (mostRecentSort != 'hidden') {
+        resetHiddenSortData(numBooksInShelf);
+      }  
+
       var numBooksToShift = numBooksInShelf > NUM_BOOKS_IN_ROW ? NUM_BOOKS_IN_ROW : 0;
-      var itemsToAppend = new Array;
       for (var i = 0; i < numBooksToShift; i++) {
-        console.log(i);
         var element = $('.bookshelf').data('isotope').filteredItems[i].element;
-        itemsToAppend.push(element);
-        element.remove();
+        var count = parseInt(element.getAttribute('data-hidden')) + 1;
+        element.setAttribute('data-hidden', count);
+        
       }
-      $('.bookshelf').isotope('reloadItems').isotope();
-      $('.bookshelf').append(itemsToAppend).isotope('appended', itemsToAppend);
+      
+      $('.bookshelf').isotope('updateSortData').isotope();
+      sortHidden();
     }
-    
+
+    function resetHiddenSortData(numBooksInShelf) {
+      for (var i = 0; i < numBooksInShelf; i++) {
+        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
+        element.setAttribute('data-hidden', '0');
+      }
+      $('.bookshelf').isotope('updateSortData').isotope();
+    }
+
     $('#sort-icon').click(function () {
       cycleSortPriority();
     });
@@ -183,6 +213,10 @@ $(document).on("page:load ready", function() {
 
     $('#search-detail-termBox').click(function () {
       $('#search-detail-termBox-term').text('kingsolver');
+    });
+
+    $('#shift-shelf').click(function () {
+      shiftShelfUpward();
     });
 
     // search
