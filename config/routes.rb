@@ -1,13 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { omniauth_callbacks: 'custom_devise_controllers/omniauth_callbacks' }
-
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
     
-  devise_scope :user do
-    get "users/verify_email" => 'custom_devise_controllers/registrations#verify_email', :as => :verify_user_email
-    post "users/update_email" => 'custom_devise_controllers/registrations#update_email', :as => :update_user_email
-  end
-
   get 'bookshelf/index'
   post 'bookshelf/get_books'
   match 'bookshelf', to: 'bookshelf#index', via: :all

@@ -29,7 +29,7 @@ class GoodreadsController < ApplicationController
       #cosmicshelf_book_profile.genre = get_genres(goodreads_book_profile)
       #cosmicshelf_book_profile.published_date = goodreads_book_profile[:book][:publication_year]
       #cosmicshelf_book_profile.cover_url = goodreads_book_profile[:book][:image_url] 
-      #cosmicshelf_book_profile.description = goodreads_book_profile[:book][:description]
+      #cosmicshelf_book_profile.description = clean_up_description(goodreads_book_profile[:book][:description])
       #cosmicshelf_book_profile.save
 
       # VERSION 2
@@ -38,7 +38,11 @@ class GoodreadsController < ApplicationController
       cosmicshelf_book_profile.user_id = current_user.id
       cosmicshelf_book_profile.source = 'goodreads'
       cosmicshelf_book_profile.title = actual_profile[:work][:original_title]
-      cosmicshelf_book_profile.author = actual_profile[:authors][:author][:name]
+      if (actual_profile[:authors][:author].kind_of?(Array)) 
+        cosmicshelf_book_profile.author = actual_profile[:authors][:author][0][:name]
+      else
+        cosmicshelf_book_profile.author = actual_profile[:authors][:author][:name]
+      end
       cosmicshelf_book_profile.genre = get_genres(actual_profile)
       cosmicshelf_book_profile.published_date = actual_profile[:work][:original_publication_year]
       cosmicshelf_book_profile.cover_url = actual_profile[:image_url]
@@ -48,6 +52,7 @@ class GoodreadsController < ApplicationController
     redirect_to(bookshelf_index_url)
   end
 
+  private
   def get_genres(actual_profile)
     genres = ''
     actual_profile[:popular_shelves][:shelf].each do |category|

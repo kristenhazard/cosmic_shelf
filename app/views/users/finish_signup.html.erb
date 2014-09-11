@@ -12,7 +12,11 @@
       <%= f.label :email %>
       <div class="controls">
         <%= f.text_field :email, :autofocus => true, :value => '', class: 'form-control input-lg', placeholder: 'Example: email@me.com' %>
-        <p class="help-block">Please confirm your email address. No spam.</p>
+        <% if current_user.sign_in_count == 1 %>
+          <p class="help-block">Please confirm your email address. No spam.</p>
+        <% else %>
+          <p class="help-block">You still have not confirmed your email address with us! We promise not to send any spam.</p>
+        <% end %>
       </div>
     </div>
     <div class="actions">

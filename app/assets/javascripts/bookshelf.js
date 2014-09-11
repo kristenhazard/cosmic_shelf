@@ -28,18 +28,18 @@ $(document).on("page:load ready", function() {
     function createBookDivs(books_to_load) {
       $.each(books_to_load, function(index, book) { 
         $new_div = $(document.createElement("div"))
-                    .addClass("book")
-                    .attr('data-author', book.author)
-                    .attr('data-genre', book.genre)
-                    .attr('data-description', book.description)
-                    .attr('data-pubdate', book.published_date)
-                    .attr('data-cover', book.cover_url)
-                    .attr('data-title', book.title)
-                    .attr('data-hidden', '0')
-                    .appendTo($('.bookshelf'));
-        $(document.createElement("img"))
-          .attr({ src: book.cover_url, title: book.title })
-          .appendTo($new_div);
+          .addClass("book")
+          .attr('data-author', book.author)
+          .attr('data-genre', book.genre)
+          .attr('data-description', book.description)
+          .attr('data-pubdate', book.published_date)
+          .attr('data-cover', book.cover_url)
+          .attr('data-title', book.title)
+          .attr('data-hidden', '0')
+          .appendTo($('.bookshelf'));
+          $(document.createElement("img"))
+            .attr({ src: book.cover_url, title: book.title, class: "book-cover" })
+            .appendTo($new_div);
       });
     }
 
@@ -117,6 +117,8 @@ $(document).on("page:load ready", function() {
       return sortTypes[currentSortType]();
     }
 
+    var curBook = $('.bookshelf').data('isotope').filteredItems[0].element.children[0];
+    curBook.id = 'current-selection';
 
     function showBook() {
       curBook = $('.bookshelf').data('isotope').filteredItems[0].element;
@@ -333,8 +335,8 @@ $(document).on("page:load ready", function() {
      * the Cosmic Shelf to detect slighter/less obvious gestures, turn the *THRESHOLD
      * number down. 
      */ 
-    var SWIPE_LEFT_THRESHOLD = 40;
-    var SWIPE_RIGHT_THRESHOLD = 40;
+    var SWIPE_LEFT_THRESHOLD = 60;
+    var SWIPE_RIGHT_THRESHOLD = 60;
     var CIRCLE_FINGER_THRESHOLD = 60;
 
     /* These count variables go up each time a gesture is registered.
@@ -350,7 +352,7 @@ $(document).on("page:load ready", function() {
     /* MIN_SWIPE_DISTANCE is the minimum distance your hand must move
      * before it registers as ONE swipe.
      */
-    var MIN_SWIPE_DISTANCE = 30;
+    var MIN_SWIPE_DISTANCE = 20;
 
     var shouldShowBook = true;
 

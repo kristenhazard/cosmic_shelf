@@ -1,8 +1,0 @@
-<h2>Enter your email to finish registration:</h2>
-
-<%= form_for current_user, :url => { :controller => "custom_devise_controllers/registrations", :action => "update_email" }, :method => :post do |f| %>
-  <%= @error_message %></br>
-  <%= f.label :email %></br>
-  <%= f.email_field :email, autofocus: true, value: "" %></br>
-  <%= f.submit "Submit" %>
-<% end %>

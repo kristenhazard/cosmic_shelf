@@ -43,6 +43,14 @@ body {
 
 /* Bookshelf Styling */
 
+.book-cover {
+  max-width: 100px;
+}
+
+#current-selection {
+  border: 5px solid yellow;
+}
+
 .bookshelf {
   float: left;
   margin: 0;
