@@ -1,28 +1,27 @@
 $(document).on("page:load ready", function() { 
   $.post("/bookshelf/get_books", function(user_books) { 
-    buildBookshelf(JSON.parse(user_books)); 
+    buildAndMaintainShelf(JSON.parse(user_books)); 
   });
 
-  function buildBookshelf(user_books) {
-    // We use the user_books if available, otherwise we use the default_books
+  function buildAndMaintainShelf(user_books) {
+    /* BUILDING SHELF, CREATING BOOK DIVS, AND SETTING UP ISOTOPE ******************************/
+
+    // We use user_books if available, otherwise we use default_books
     if (user_books == null || user_books.length == 0) {      
       var books_we_use = default_books;
     } else {
       var books_we_use = { 'books': user_books };
     }
 
-    //
-    var sortTypes = new Array(sortAuthor, sortTitle, sortGenre, sortPubDate, sortHidden);
-    var AUTHOR_SORT_TYPE = 0;
-    var TITLE_SORT_TYPE = 1;
-    var GENRE_SORT_TYPE = 2;
-    var PUBDATE_SORT_TYPE = 3;
-    var HIDDEN_SORT_TYPE = 4;
-
-    // 
     createBookDivs(books_we_use["books"]);
     triggerIsotope();
-    var currentSortType;
+        
+    // The div id 'current-selection' is highlighted yellow for showBook
+    var curBook = $('.bookshelf').data('isotope').filteredItems[0].element.children[0];
+    curBook.id = 'current-selection';
+
+    // Default/onload sort type is author
+    var currentSortType = AUTHOR_SORT_TYPE;
     sortAuthor();
 
     function createBookDivs(books_to_load) {
@@ -67,148 +66,9 @@ $(document).on("page:load ready", function() {
       });
     }
 
-    var mostRecentSort = 'author';
+    /* PLACING ICONS AND SETTING UP ONCLICK EVENTS ******************************/
 
-    function sortAuthor() {
-      mostRecentSort = 'author';
-      $('.bookshelf').isotope({ sortBy : "author" });
-      AuthorSortIcon();
-      currentSortType = AUTHOR_SORT_TYPE;
-      return false;
-    }
-
-    function sortTitle() {
-      mostRecentSort = 'title';
-      $('.bookshelf').isotope({ sortBy : "title" });
-      TitleSortIcon();
-      currentSortType = TITLE_SORT_TYPE;
-      return false;
-    }
-
-    function sortGenre() {
-      mostRecentSort = 'genre';
-      $('.bookshelf').isotope({ sortBy : "genre" });
-      GenreSortIcon();
-      currentSortType = GENRE_SORT_TYPE;
-      return false;
-    }
-
-    function sortPubDate() {
-      mostRecentSort = 'pubdate';
-      $('.bookshelf').isotope({ sortBy : "pubdate" });
-      PubDateSortIcon();
-      currentSortType = PUBDATE_SORT_TYPE;
-      return false;
-    }
-
-    function sortHidden() {
-      mostRecentSort = 'hidden';
-      $('.bookshelf').isotope({ sortBy : "hidden" });
-      currentSortType = HIDDEN_SORT_TYPE;
-      return false;
-    }
-
-    function cycleSortPriority() {
-      if (currentSortType == sortTypes.length - 2 || currentSortType == HIDDEN_SORT_TYPE) {
-        currentSortType = 0;
-      } else {
-        currentSortType++;
-      }
-      return sortTypes[currentSortType]();
-    }
-
-    var curBook = $('.bookshelf').data('isotope').filteredItems[0].element.children[0];
-    curBook.id = 'current-selection';
-
-    function showBook() {
-      curBook = $('.bookshelf').data('isotope').filteredItems[0].element;
-      $('#book-detail-author').text(curBook.getAttribute('data-author'));
-      $('#book-detail-genre').text(curBook.getAttribute('data-genre'));
-      $('#book-detail-pubdate').text(curBook.getAttribute('data-pubdate'));
-      $('#book-detail-title').text(curBook.getAttribute('data-title'));
-      $('#book-detail-description').text(curBook.getAttribute('data-description'));
-      var cover = document.createElement("img");
-      cover.src = curBook.getAttribute('data-cover');
-      $('#book-detail-cover').empty();
-      $('#book-detail-cover').append(cover);
-      $('#book-detail').fadeToggle();        
-    }
-
-    function showSearch() {
-      $('#search-detail-icon').fadeIn();
-      $('#search-detail-title').text('title');
-      $('#search-detail-author').text('author');
-      $('#search-detail-desc').text('description');
-      $('#search-detail-genre').text('genre');
-      $('#search-detail-pubdate').text('publication date');
-      $('#search-detail-termbox').visible = true;
-      $('#search-detail').fadeToggle();
-    }
-
-    function hideBook() {
-      $('#book-detail').fadeOut('slow');
-    }
-    
-    var NUM_BOOKS_IN_ROW = 7;
-    function shiftShelfUpward() {
-      var numBooksInShelf = $('.bookshelf').data('isotope').filteredItems.length;
-
-      if (mostRecentSort != 'hidden') {
-        resetHiddenSortData(numBooksInShelf);
-      }  
-
-      var numBooksToShift = numBooksInShelf > NUM_BOOKS_IN_ROW ? NUM_BOOKS_IN_ROW : 0;
-      for (var i = 0; i < numBooksToShift; i++) {
-        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
-        var count = parseInt(element.getAttribute('data-hidden')) + 1;
-        element.setAttribute('data-hidden', count);
-        
-      }
-      
-      $('.bookshelf').isotope('updateSortData').isotope();
-      sortHidden();
-    }
-
-    function resetHiddenSortData(numBooksInShelf) {
-      for (var i = 0; i < numBooksInShelf; i++) {
-        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
-        element.setAttribute('data-hidden', '0');
-      }
-      $('.bookshelf').isotope('updateSortData').isotope();
-    }
-
-    $('#sort-icon').click(function () {
-      cycleSortPriority();
-    });
-
-    $('#sort-icon-author').click(function () {
-      sortAuthor();
-      AuthorSortIcon();
-    });
-
-    $('#sort-icon-genre').click(function () {
-      sortGenre();
-      GenreSortIcon();
-    });
-
-    $('#sort-icon-title').click(function () {
-      sortTitle();
-      TitleSortIcon();
-    });
-
-    $('#sort-icon-pubdate').click(function () {
-      sortPubDate();
-      PubDateSortIcon();
-    });
-
-    $('#show-book').click(function () {
-      showBook();
-    });
-
-    $('#hide-book').click(function () {
-      hideBook();
-    });
-
+    // Search
     $('#search-icon').click(function () {
       showSearch();
     });
@@ -217,11 +77,6 @@ $(document).on("page:load ready", function() {
       $('#search-detail-termBox-term').text('kingsolver');
     });
 
-    $('#shift-shelf').click(function () {
-      shiftShelfUpward();
-    });
-
-    // search
     $('#search-detail-icon').click(function () {
       $('#search-detail').fadeOut('slow');
       $('#search-detail-termBox-term').text('');
@@ -230,22 +85,36 @@ $(document).on("page:load ready", function() {
       triggerIsotope();
     });
 
-    function filterByAuthor(allBooks, filterOfAuthor) {
-      return $(allBooks.books).filter(function (index, item) {
-        for (var i in filterOfAuthor) {
-          if (!item[i].toString().match(filterOfAuthor[i])) return null;
-        }
-        return item;
-      });
-    }
+    // Show book detail
+    $('#show-book').click(function () {
+      showBook();
+    });
 
-    var filterForAuthor = {
-      "title": new RegExp('(.*?)', 'gi'),
-      "author": new RegExp('Kingsolver', 'gi'),
-      "genre": new RegExp('(.*?)', 'gi'),
-      "published_date": new RegExp('(.*?)', 'gi'),
-      "cover_url": new RegExp('(.*?)', 'gi')
-    };
+    // Hide book detail
+    $('#hide-book').click(function () {
+      hideBook();
+    });
+
+    // Shift entire row upward
+    $('#shift-shelf').click(function () {
+      shiftShelfUpward();
+    });
+
+    // Shift single book
+    $('#single-shift-shelf').click(function () {
+      shiftSingleBook();
+    });
+
+    // Cycle sort priority (author => title => genre => publish date => repeat)
+    $('#sort-icon').click(function () {
+      cycleSortPriority();
+    });
+
+    // Author
+    $('#sort-icon-author').click(function () {
+      sortAuthor();
+      AuthorSortIcon();
+    });
 
     function AuthorSortIcon() {
       if ($('#sort-icon-author').attr("src").indexOf("_selected") >= 1) {
@@ -265,6 +134,12 @@ $(document).on("page:load ready", function() {
       $('#sort-icon-title').attr("src", src);
     }
 
+    // Title
+    $('#sort-icon-title').click(function () {
+      sortTitle();
+      TitleSortIcon();
+    });
+
     function TitleSortIcon() {
       if ($('#sort-icon-title').attr("src").indexOf("_selected") >= 1) {
         return;
@@ -282,6 +157,12 @@ $(document).on("page:load ready", function() {
       var src = $('#sort-icon-pubdate').attr("src").replace("_selected.png", ".png");
       $('#sort-icon-pubdate').attr("src", src);
     }
+
+    // Genre
+    $('#sort-icon-genre').click(function () {
+      sortGenre();
+      GenreSortIcon();
+    });
   
     function GenreSortIcon() {
       if ($('#sort-icon-genre').attr("src").indexOf("_selected") >= 1) {
@@ -300,6 +181,12 @@ $(document).on("page:load ready", function() {
       var src = $('#sort-icon-title').attr("src").replace("_selected.png", ".png");
       $('#sort-icon-title').attr("src", src);
     }
+
+    // Published date
+    $('#sort-icon-pubdate').click(function () {
+      sortPubDate();
+      PubDateSortIcon();
+    });
     
     function PubDateSortIcon() {
       if ($('#sort-icon-pubdate').attr("src").indexOf("_selected") >= 1) {
@@ -319,15 +206,208 @@ $(document).on("page:load ready", function() {
       $('#sort-icon-title').attr("src", src);
     }
 
-    /* LEAP MOTION STUFF EVERYTHING BELOW HERE */
+    /* SEARCH ******************************/
 
-    // Every FRAME_RATE frames we check for hand position.
-    var FRAME_RATE = 10
+    function showSearch() {
+      $('#search-detail-icon').fadeIn();
+      $('#search-detail-title').text('title');
+      $('#search-detail-author').text('author');
+      $('#search-detail-desc').text('description');
+      $('#search-detail-genre').text('genre');
+      $('#search-detail-pubdate').text('publication date');
+      $('#search-detail-termbox').visible = true;
+      $('#search-detail').fadeToggle();
+    }
 
-    /* The Leap Motion will detect GESTURE_THRESHOLD many gestures before
-     * it notifies the Cosmic Shelf that it has noticed a gesture
-     * That means, the leap motion would have to detect SWIPE_LEFT_THRESHOLD=40 
-     * left-swipe gestures before it actually signals the Cosmic Shelf. These *THRESHOLD
+    function filterByAuthor(allBooks, filterOfAuthor) {
+      return $(allBooks.books).filter(function (index, item) {
+        for (var i in filterOfAuthor) {
+          if (!item[i].toString().match(filterOfAuthor[i])) return null;
+        }
+        return item;
+      });
+    }
+
+    var filterForAuthor = {
+      "title": new RegExp('(.*?)', 'gi'),
+      "author": new RegExp('Kingsolver', 'gi'),
+      "genre": new RegExp('(.*?)', 'gi'),
+      "published_date": new RegExp('(.*?)', 'gi'),
+      "cover_url": new RegExp('(.*?)', 'gi')
+    };
+
+    /* SHOW AND HIDE BOOK DETAIL ******************************/
+
+    // We trigger showBook when shouldShowBook is true, and hideBook when it is false
+    var shouldShowBook = true;
+
+    function showBook() {
+      $('#book-detail-author').text(curBook.getAttribute('data-author'));
+      $('#book-detail-genre').text(curBook.getAttribute('data-genre'));
+      $('#book-detail-pubdate').text(curBook.getAttribute('data-pubdate'));
+      $('#book-detail-title').text(curBook.getAttribute('data-title'));
+      $('#book-detail-description').text(curBook.getAttribute('data-description'));
+      var cover = document.createElement("img");
+      cover.src = curBook.getAttribute('data-cover');
+      $('#book-detail-cover').empty();
+      $('#book-detail-cover').append(cover);
+      $('#book-detail').fadeToggle();  
+      shouldShowBook = false;      
+    }
+
+    function hideBook() {
+      $('#book-detail').fadeOut('slow');
+      shouldShowBook = true;      
+    }
+
+    /* SORTING AND SHIFTING THE BOOKS AROUND ******************************/
+
+    // This sort of acts like an enumerated list, which helps us track and change the current sort type
+    var sortTypes = new Array(sortAuthor, sortTitle, sortGenre, sortPubDate, sortHidden);
+    var AUTHOR_SORT_TYPE = 0;
+    var TITLE_SORT_TYPE = 1;
+    var GENRE_SORT_TYPE = 2;
+    var PUBDATE_SORT_TYPE = 3;
+    var HIDDEN_SORT_TYPE = 4;
+
+    var NUM_BOOKS_IN_ROW = 7;
+
+    /* Every book div has a 'data-hidden' attribute that isotope can use to sort.
+     * This field allows us to shift rows/single books. This attribute is always 
+     * a number. When we want to shift a row upward, we increment this 'data-hidden'
+     * number by 1 on the first 7 books. Then we resort based off of this hidden 
+     * attribute every book div has. Since the first seven books have a 'data-hidden'
+     * value 1 higher than all of the other book divs, the first seven are sent to 
+     * bottom of the bookshelf. Shifting single books works the same way, except we 
+     * increment one book's 'data-hidden' attribute (not seven).
+     */
+
+    // Sends the top row of books to the bottom, and all the other rows move up as well
+    function shiftShelfUpward() {
+      var numBooksInShelf = $('.bookshelf').data('isotope').filteredItems.length;
+
+      if (currentSortType != HIDDEN_SORT_TYPE) resetHiddenSortData(numBooksInShelf);
+
+      // If there are not at least 7 books on the shelf, then we do not have to shift the row upward
+      var numBooksToShift = numBooksInShelf >= NUM_BOOKS_IN_ROW ? NUM_BOOKS_IN_ROW : 0;
+      for (var i = 0; i < numBooksToShift; i++) {
+        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
+        var count = parseInt(element.getAttribute('data-hidden')) + 1;
+        element.setAttribute('data-hidden', count);
+      }
+      
+      $('.bookshelf').isotope('updateSortData').isotope();
+      sortHidden();
+    }
+
+    // Moves the top left book to the bottom left of the shelf
+    function shiftSingleBook() {
+      var numBooksInShelf = $('.bookshelf').data('isotope').filteredItems.length;
+
+      if (currentSortType != HIDDEN_SORT_TYPE) resetHiddenSortData(numBooksInShelf);
+
+      var element = $('.bookshelf').data('isotope').filteredItems[0].element;
+      var count = parseInt(element.getAttribute('data-hidden')) + 1;
+      element.setAttribute('data-hidden', count);
+      
+      $('.bookshelf').isotope('updateSortData').isotope();
+      sortHidden();
+    }
+
+    // These sortSomeAttribute functions trigger isotope, trigger the icons, and correct the current selected/first book
+    function sortAuthor() {
+      closeBookDetailsIfVisible();
+      removeCurrentSelection();
+      $('.bookshelf').isotope({ sortBy : "author" });
+      getCurrentSelection();
+      AuthorSortIcon();
+      currentSortType = AUTHOR_SORT_TYPE;
+      return false;
+    }
+
+    function sortTitle() {
+      closeBookDetailsIfVisible();
+      removeCurrentSelection();
+      $('.bookshelf').isotope({ sortBy : "title" });
+      getCurrentSelection();
+      TitleSortIcon();
+      currentSortType = TITLE_SORT_TYPE;
+      return false;
+    }
+
+    function sortGenre() {
+      closeBookDetailsIfVisible();
+      removeCurrentSelection();
+      $('.bookshelf').isotope({ sortBy : "genre" });
+      getCurrentSelection();
+      GenreSortIcon();
+      currentSortType = GENRE_SORT_TYPE;
+      return false;
+    }
+
+    function sortPubDate() {
+      closeBookDetailsIfVisible();
+      removeCurrentSelection();
+      $('.bookshelf').isotope({ sortBy : "pubdate" });
+      getCurrentSelection();
+      PubDateSortIcon();
+      currentSortType = PUBDATE_SORT_TYPE;
+      return false;
+    }
+
+    function sortHidden() {
+      closeBookDetailsIfVisible();
+      removeCurrentSelection();
+      $('.bookshelf').isotope({ sortBy : "hidden" });
+      getCurrentSelection();
+      currentSortType = HIDDEN_SORT_TYPE;
+      return false;
+    }
+
+    function closeBookDetailsIfVisible() {
+      hideBook();
+      $('#search-detail').fadeOut('slow');
+    }
+
+    // Cycle sort priority (author => title => genre => publish date => repeat)
+    function cycleSortPriority() {
+      // We subtract 2 from sortTypes.length so we skip over sortHidden
+      if (currentSortType == sortTypes.length - 2 || currentSortType == HIDDEN_SORT_TYPE) {
+        currentSortType = 0;
+      } else {
+        currentSortType++;
+      }
+      sortTypes[currentSortType]();
+    }
+
+    // Removes the highlight from the current selected book
+    function removeCurrentSelection() {
+      curBook.setAttribute('id', '');
+    }
+
+    // Highlights the new current selected book (top left book)
+    function getCurrentSelection() {
+      curBook = $('.bookshelf').data('isotope').filteredItems[0].element.children[0];
+      curBook.id = 'current-selection';
+    }
+
+    // We set all of the 'data-hidden' attributes to '0'
+    function resetHiddenSortData(numBooksInShelf) {
+      for (var i = 0; i < numBooksInShelf; i++) {
+        var element = $('.bookshelf').data('isotope').filteredItems[i].element;
+        element.setAttribute('data-hidden', '0');
+      }
+      $('.bookshelf').isotope('updateSortData').isotope();
+    }
+
+    /* LEAP MOTION STUFF ******************************/
+
+    // Every FRAME_RATE frames we check for hand position
+    var FRAME_RATE = 10;
+
+    /* The leap motion detects many small instances of gestures and once it
+     * has detected enough small instances, we will then trigger something
+     * to happen on the cosmic shelf. These *THRESHOLD
      * constants essentially change the sensitivity the Cosmic Shelf has
      * for the Leap Motion. The higher the *THRESHOLD number, the less
      * sensitive the Cosmic Shelf will be for gestures, which means 
@@ -335,71 +415,71 @@ $(document).on("page:load ready", function() {
      * the Cosmic Shelf to detect slighter/less obvious gestures, turn the *THRESHOLD
      * number down. 
      */ 
-    var SWIPE_LEFT_THRESHOLD = 60;
-    var SWIPE_RIGHT_THRESHOLD = 60;
-    var CIRCLE_FINGER_THRESHOLD = 60;
-
-    /* These count variables go up each time a gesture is registered.
-     * For example, swipeLeftCount will go up by one each time a leftward
-     * swipe is registered. Once it reaches SWIPE_LEFT_THRESHOLD, it will
-     * signal the Cosmic Shelf (it waits to detect enough swipeLefts to
-     * justify notifying the Cosmic Shelf).
-     */
-    var swipeLeftCount = 0;
-    var swipeRightCount = 0;
-    var circleFingerCount = 0;
+    var SWIPE_LEFT_THRESHOLD = 30;
+    var SWIPE_RIGHT_THRESHOLD = 30;
+    var CIRCLE_FINGER_THRESHOLD = 50;
 
     /* MIN_SWIPE_DISTANCE is the minimum distance your hand must move
      * before it registers as ONE swipe.
      */
     var MIN_SWIPE_DISTANCE = 20;
 
-    var shouldShowBook = true;
+    /* These count variables go up each time a gesture is registered.
+     * For example, swipeLeftCount will go up by one each time a leftward
+     * swipe is registered. Once it reaches SWIPE_LEFT_THRESHOLD, it will
+     * signal the Cosmic Shelf (it waits to detect enough swipeLefts to
+     * justify notifying the Cosmic Shelf). We reset them back to 0
+     * once they reach their threshold.
+     */
+    var swipeLeftCount = 0;
+    var swipeRightCount = 0;
+    var circleFingerCount = 0;
+
+    var prevHand = null;
+    var curHand = null;
+
+    // Main leap function
+    Leap.loop({ enableGestures: true }, function(frame) {
+      // Every ten frames we check the velocity and position of the hand and then compare it with the previous stored velocity and position
+      if (frame.id % FRAME_RATE == 0) { 
+        prevHand = curHand;
+        curHand = frame.hands[0];
+      }
+
+      var gestures = frame.gestures;
+      if (gestures.length != 0 && gestures[0].type == 'circle') { // Did we detect a gesture?
+
+          onCircleFinger();
+
+      } else {
+        detectSwipe(prevHand, curHand);
+      }
+    });
 
     /* We have detected a circle finger motion. If it continues
      * long enough to reach the threshold, it will interact
-     * with the Cosmic Shelf.
+     * with the Cosmic Shelf. Circle finger toggles the book
+     * detail div. It will show and hide that detail div.
      */
     function onCircleFinger() {
+      swipeRightCount = 0;
+      swipeLeftCount = 0;
       circleFingerCount++;
       if (circleFingerCount >= CIRCLE_FINGER_THRESHOLD) {
         circleFingerCount = 0;
         if (shouldShowBook) {
           showBook();
-          shouldShowBook = false;
         } else {
           hideBook();
-          shouldShowBook = true;
         }
-        console.log("circle"); // CIRCLE FINGER DETECTED
-      }
-    }
-
-    /* We have detected a swipe motion. If it continues
-     * long enough to reach the threshold, it will interact
-     * with the Cosmic Shelf.
-     */
-    function onSwipe(curHand) {
-      var direction = curHand.palmVelocity[0];
-      if (direction < 0) { // Negative direction => moving right to left => swipe left
-        swipeLeftCount++;
-        if (swipeLeftCount >= SWIPE_LEFT_THRESHOLD) { 
-          swipeLeftCount = 0;
-          shiftShelfUpward(); // INTERACTS WITH COSMIC SHELF 
-          console.log("left"); // SWIPE LEFT DETECTED 
-        }
-      } else { // Otherwise must be positive direction => moving left to right => swipe right
-        swipeRightCount++;
-        if (swipeRightCount >= SWIPE_RIGHT_THRESHOLD) {
-          swipeRightCount = 0;
-          cycleSortPriority(); // INTERACTS WITH COSMIC SHELF
-          console.log("right"); // SWIPE RIGHT DETECTED
-        }
+        //console.log("circle"); // CIRCLE FINGER DETECTED
       }
     }
 
     // prevHand.palmVelocity[0] => The [0] acesses the x-velocity
     // prevHand.palmPosition[0] => The [0] acesses the x-position
+    // prevHand.palmPosition[1] would similarly access the y dimension 
+    // prevHand.palmPosition[2] would similarly access the z dimension 
     function detectSwipe(prevHand, curHand) {
       // If the either hand objects are null, no swipe, return
       if (prevHand == null  || curHand == null) return; 
@@ -416,28 +496,31 @@ $(document).on("page:load ready", function() {
       onSwipe(curHand);
     }
 
-    var prevHand = null;
-    var curHand = null;
-    var options = { enableGestures: true }; 
-
-    Leap.loop(options, function(frame) {
-      // Every ten frames we check the velocity and position of the hand and then compare it with the previous stored velocity and position
-      if (frame.id % FRAME_RATE == 0) { 
-        prevHand = curHand;
-        curHand = frame.hands[0];
+    /* We have detected a swipe motion. If it continues
+     * long enough to reach the threshold, it will interact
+     * with the Cosmic Shelf.
+     */
+    function onSwipe(curHand) {
+      var direction = curHand.palmVelocity[0];
+      if (direction < 0) { // Negative direction => moving right to left => swipe left
+        swipeRightCount = 0;
+        circleFingerCount = 0;
+        swipeLeftCount++;
+        if (swipeLeftCount >= SWIPE_LEFT_THRESHOLD) { 
+          swipeLeftCount = 0;
+          shiftShelfUpward(); 
+          //console.log("left"); // SWIPE LEFT DETECTED 
+        }
+      } else { // Otherwise must be positive direction => moving left to right => swipe right
+        swipeLeftCount = 0;
+        circleFingerCount = 0;
+        swipeRightCount++;
+        if (swipeRightCount >= SWIPE_RIGHT_THRESHOLD) {
+          swipeRightCount = 0;
+          cycleSortPriority(); 
+          //console.log("right"); // SWIPE RIGHT DETECTED
+        }
       }
-
-      var gestures = frame.gestures;
-      if (gestures.length != 0) { // Did we detect a gesture?
-        var gesture = gestures[0];
-        if (gesture.type == "circle") { // Was the gesture a circle finger gesture?
-          onCircleFinger();
-        } else { // If it wasn't a circle finger, was it a swipe?
-          detectSwipe(prevHand, curHand);
-        } 
-      } else {
-        detectSwipe(prevHand, curHand);
-      }
-    });
+    }
   }
 });
