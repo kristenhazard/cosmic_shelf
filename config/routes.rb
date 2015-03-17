@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
     
   get 'bookshelf/index'
+  get 'bookshelf/kristen'
   post 'bookshelf/get_books'
   match 'bookshelf', to: 'bookshelf#index', via: :all
-  root :to => 'bookshelf#index'
+  root :to => 'bookshelf#kristen'
 
   post 'goodreads/authorize'
   get 'goodreads/populate_shelf'

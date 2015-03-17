@@ -1,6 +1,10 @@
 class BookshelfController < ApplicationController
   def index
   end
+  
+
+  def kristen
+  end
 
   def get_books
     books = (current_user == nil) ? nil : current_user.books
