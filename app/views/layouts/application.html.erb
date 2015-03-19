@@ -7,8 +7,25 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-  <p id="notice"><%= notice %></p>
+  <!-- <p id="notice"><%= notice %></p> -->
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapsed" data-target="#mobile-menu-activate">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">Brand</a>
+		</div>
+	<ul class="nav navbar-nav navbar-right">
+		<li><a href="/bookshelf/index">Version 1</a></li>
+		<li><a href="/">Version 2</a></li>
+		<li><a href="/bookshelf/generic">Version 3</a></li>
+	</ul>
+	</div>
+</nav>
 
   <%= yield %>
 

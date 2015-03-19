@@ -12,6 +12,9 @@
  *= require_tree .
 */
 
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
 body {
   margin: 0;
   padding: 0;
@@ -297,7 +300,7 @@ ul.devise-menu li {
   -khtml-box-shadow:  0px 0px 25px #00F;
   -moz-box-shadow:    0px 0px 25px #00F;
   -webkit-box-shadow: 0px 0px 25px #00F;
-  box-shadow:         0px 0px 25px #00F
+  box-shadow:         0px 0px 25px #00F;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;

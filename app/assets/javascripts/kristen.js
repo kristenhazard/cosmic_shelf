@@ -22,10 +22,26 @@ $(bookList).each(function() {
 	}
 });
 
+/* This works in conjunction with the zoom-in css hover effect. It gives the element a high z-index whilst hovered */
+
 $(book).hover(function() {
 	$(this).css('z-index', '200');
 }, function() {
 	$(this).css('z-index', '10');
 });
 
+/* Scaling text in the book cover. */
+
+});
+
+$(window).load(function() {
+$('.shelf-container li').each(function() {
+	var bookHeight = $(this).height();
+	var titleSize = bookHeight * 0.15;
+	var subtitleSize = bookHeight * 0.075;
+	var authorSize = bookHeight * 0.05;
+	$(this).find('h1').css('font-size', titleSize);
+	$(this).find('h4').css('font-size', subtitleSize);
+	$(this).find('h6').css('font-size', authorSize);
+});
 });

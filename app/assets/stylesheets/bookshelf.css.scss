@@ -89,7 +89,7 @@ section#bookshelf {
 			padding:0;
 		}
 	}
-	.row {
+	.cosmic_row {
 		width:100%;
 		height:auto;
 		background:transparent;
@@ -252,7 +252,7 @@ section#bookshelf {
 			margin:0;
 			padding:0;
 			float:right;
-			left:-0.6%;
+			right:1.6%;
 		}
 		.onethird {
 			width:40%;
@@ -281,14 +281,14 @@ section#bookshelf {
 			background-position:center bottom;
 		}
 		.cabinet.tall {
-			left:19.5%;
+			left:18.4%;
 		}
 		.cabinet.square {
 			width:35.75%;
 			height:auto;
 			position:absolute;
-			right:0;
-			bottom:-27%;
+			right:2.1%;
+			top:46.5%;
 			z-index:20;
 			border:none;
 			background:transparent;
@@ -312,12 +312,13 @@ section#bookshelf {
 		.lrg-rectangle {
 			margin-left:17%;
 			float:right;
+			margin:0 2% 0 17%;
 		}
 		.sm-rectangle {
 			float:right;
 		}
 		.sm-rectangle.first {
-			margin-right:-8%;
+			margin-right:-7%;
 		}
 		.upright-rectangle {
 			width:33%;
@@ -356,7 +357,7 @@ section#bookshelf {
 			padding:0;
 			float:right;
 			.half {
-				width:99%;
+				width:100%;
 				height:auto;
 				position:relative;
 				margin:0;
@@ -398,7 +399,7 @@ section#bookshelf {
 			margin:0 0 0 5%;
 			padding:0;
 			float:left;
-			right:-1%;
+			left:1.5%;
 			img {
 				width:100%;
 				height:auto;
@@ -407,10 +408,10 @@ section#bookshelf {
 			}
 		}
 		.cabinet.square {
-			width:44.4%;
+			width:44%;
 			height:auto;
 			position:absolute;
-			right:63.1%;
+			right:62.5%;
 			bottom:31.6%;
 			z-index:20;
 			border:none;
