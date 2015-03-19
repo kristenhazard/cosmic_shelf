@@ -1,3 +1,430 @@
 // Place all the styles related to the bookshelf controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* Global settings */
+
+$brown    : #5c2f08;
+$trim     : #a76225;
+$capcolor : #84351b;
+
+/* Global styles */
+
+.clear {
+	width:1px;
+	height:0;
+	background:transparent;
+	color:transparent;
+	text-decoration:none;
+	border:none;
+	margin:0;
+	padding:0;
+	clear:both;
+}
+
+body {
+	text-align:center;
+}
+
+/* Bookshelf Styles */
+
+#wrapper {
+	/*max-width:1376px;*/
+	width:80%;
+	height:auto;
+	position:relative;
+	text-align:left;
+	margin:0 8%;
+	padding:0;
+	background:transparent;
+}
+
+section#bookshelf {
+	width:100%;
+	position:relative;
+	z-index:5;
+	margin:0;
+	background:transparent;
+	padding:0;
+	.topcap {
+		width:90%;
+		height:auto;
+		position:relative;
+		z-index:100;
+		background-image: url('/assets/topcap_bkgd.gif');
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-position:center top;
+		margin:0 0 0 12%;
+		padding:0;
+		box-shadow:0 10px 30px #000;
+		-webkit-box-shadow:0 10px 30px #000;
+		-moz-box-shadow:0 10px 30px #000;
+		-ms-box-shadow:0 10px 30px #000;
+		-o-box-shadow:0 10px 30px #000;
+		img.cap-background {
+			width:100%;
+			height:auto;
+			margin:0;
+			padding:0;
+		}
+	}
+	.row {
+		width:100%;
+		height:auto;
+		background:transparent;
+		position:relative;
+		z-index:10;
+		margin:0;
+		padding:0;
+		.shelf-container {
+			position:relative;
+			background-image: url('/assets/bookshelf_wood_bkgd_1.jpg');
+			background-repeat:no-repeat;
+			background-size:cover;
+			background-position:center bottom;
+			border-color:$capcolor;
+			border-image:url('/assets/border_image.png') 1;
+			border-width:5px;
+			box-shadow:-10px 10px 30px #000;
+			-webkit-box-shadow:inset 0px 20px 110px #000;
+			-moz-box-shadow:inset 0px 20px 110px #000;
+			-ms-box-shadow:inset 0px 20px 110px #000;
+			-o-box-shadow:inset 0px 20px 110px #000;
+			img.container-background {
+				width:100%;
+				height:auto;
+			}
+			ul {
+				width:90%;
+				/*max-width:90%;*/
+				height:auto;
+				position:absolute;
+				z-index:40;
+				bottom:0.5em;
+				left:5%;
+				list-style:none;
+				margin:0 0 1em 5%;
+				padding:0;
+				/*overflow:hidden;*/
+				li {
+					width:20%;
+					max-width:27%;
+					float:left;
+					list-style:none;
+					float:left;
+					display:inline-block;
+					margin:0 1% 0 0;
+					padding:0;
+					cursor:pointer;
+					box-shadow:0px 5px 20px #000;
+					-webkit-box-shadow:0px 5px 20px #000;
+					-moz-box-shadow:0px 5px 20px #000;
+					-ms-box-shadow:0px 5px 20px #000;
+					-o-box-shadow:0px 5px 20px #000;
+					img.book_cover {
+						width:100%;
+						height:auto;
+						margin:0 0 -2% 0;
+						padding:0;
+					}
+				}
+			}
+		}
+		.cabinet {
+			width:auto;
+			height:auto;
+			position:relative;
+			background:$trim;
+			margin:0;
+			padding:0;
+			border:none;
+			img {
+				width:100%;
+				height:auto;
+				margin:0;
+				padding:0;
+			}
+		}
+		.cabinet.tall {
+			width:10%;
+			height:100%;
+			position:absolute;
+			z-index:12;
+			right:0;
+			background-image: url('/assets/tall_bkgd.gif');
+			background-repeat:no-repeat;
+			background-size:cover;
+			background-position:center top;
+		}
+		.cabinet.double-tall {
+			right:0%;
+		}
+		.lrg-rectangle {
+			width:60%;
+			height:auto;
+			position:relative;
+			z-index:12;
+			margin:0;
+			padding:0;
+		}
+		.sm-rectangle {
+			width:30%;
+			height:auto;
+			position:relative;
+			z-index:12;
+			margin:0;
+			padding:0;
+		}
+	}
+	.toprow {
+		z-index:10;
+		padding-right:15%;
+		.fulcrum {
+			width:25%;
+			height:auto;
+			position:relative;
+			z-index:11;
+			margin:0;
+			padding:0;
+			float:right;
+			left:-0.6%;
+		}
+		.onethird {
+			width:40%;
+			height:33%;
+			position:relative;
+			z-index:11;
+			margin:0 0% 0 33.4%;
+			padding:0;
+			float:left;
+			background-image: url('/assets/bookshelf_wood_bkgd_1.jpg');
+			background-repeat:no-repeat;
+			background-size:cover;
+			background-position:center bottom;
+		}
+		.twothird {
+			width:40%;
+			height:67%;
+			position:relative;
+			z-index:11;
+			margin:0 0% 0 33.4%;
+			padding:0;
+			float:left;
+			background-image: url('/assets/bookshelf_wood_bkgd_1.jpg');
+			background-repeat:no-repeat;
+			background-size:cover;
+			background-position:center bottom;
+		}
+		.cabinet.tall {
+			left:19.5%;
+		}
+		.cabinet.square {
+			width:35.75%;
+			height:auto;
+			position:absolute;
+			right:0;
+			bottom:-27%;
+			z-index:20;
+			border:none;
+			background:transparent;
+			box-shadow:0 20px 110px #000;
+			-webkit-box-shadow:0 20px 110px #000;
+			-moz-box-shadow:0 20px 110px #000;
+			-ms-box-shadow:0 20px 110px #000;
+			-o-box-shadow:0 20px 110px #000;
+			img {
+				width:100%;
+				height:auto;
+				margin:0 0 -1% 0;
+				padding:0;
+				border-radius:5px;
+				-webkit-border-radius:5px;
+				-moz-border-radius:5px;
+				-ms-border-radius:5px;
+				-o-border-radius:5px;
+			}
+		}
+	}
+	.middlerow {
+		width:100%;
+		height:auto;
+		position:relative;
+		z-index:9;
+		margin:0;
+		padding:0;
+		.lrg-rectangle {
+			margin-left:17%;
+			float:right;
+		}
+		.sm-rectangle {
+			float:right;
+		}
+		.sm-rectangle.first {
+			margin-right:-8%;
+		}
+		.upright-rectangle {
+			width:33%;
+			height:60%;
+			position:absolute;
+			z-index:11;
+			bottom:0;
+			left:14%;
+			.onequarter {
+				width:100%;
+				height:25%;
+				margin:0;
+				padding:0;
+				border:none;
+				background:none;
+				box-shadow:0 0 0;
+			}
+			.threequarter {
+				width:100%;
+				height:75%;
+				margin:0;
+				padding:0;
+				border:none;
+				background:none;
+				box-shadow:0 0 0;
+			}
+		}
+	}
+	.bottomrow {
+		.lrg-rectangle {
+			width:53%;
+			height:auto;
+			position:relative;
+			z-index:12;
+			margin:0 10% 0 0;
+			padding:0;
+			float:right;
+			.half {
+				width:99%;
+				height:auto;
+				position:relative;
+				margin:0;
+				padding:0;
+				border-bottom-width:4px;
+				border-color:$capcolor;
+				border-image:url('/assets/border_image.png') 1;
+				border-width:5px;
+				box-shadow:inset 0px -10px 110px #000;
+				-webkit-box-shadow:inset 0px -10px 110px #000;
+				-moz-box-shadow:inset 0px -10px 110px #000;
+				-ms-box-shadow:inset 0px -10px 110px #000;
+				-o-box-shadow:inset 0px -10px 110px #000;
+				img {
+					width:100%;
+					height:auto;
+					margin:0;
+					padding:0;
+				}
+			}
+		}
+		.square-mod {
+			width:27.4%;
+			height:auto;
+			position:relative;
+			z-index:10;
+			margin:0;
+			padding:0;
+			float:right;
+		}
+		.square-mod.first {
+			margin-right:10%;
+		}
+		.square-mod_2 {
+			width:30.55%;
+			height:auto;
+			position:relative;
+			z-index:10;
+			margin:0 0 0 5%;
+			padding:0;
+			float:left;
+			right:-1%;
+			img {
+				width:100%;
+				height:auto;
+				margin:0;
+				padding:0;
+			}
+		}
+		.cabinet.square {
+			width:44.4%;
+			height:auto;
+			position:absolute;
+			right:63.1%;
+			bottom:31.6%;
+			z-index:20;
+			border:none;
+			background:transparent;
+			img {
+				width:100%;
+				height:auto;
+				margin:0;
+				padding:0;
+				border-radius:5px;
+				-webkit-border-radius:5px;
+				-moz-border-radius:5px;
+				-ms-border-radius:5px;
+				-o-border-radius:5px;
+			}
+		}
+	}
+	.bottomcap {
+		width:100%;
+		height:auto;
+		position:relative;
+		z-index:15;
+		margin:0 0 0 2%;
+		padding:0;
+		background-image: url('/assets/bottomcap_bkgd.gif');
+		background-repeat:no-repeat;
+		background-size:cover;
+		background-position:center top;
+		box-shadow:-10px -10px 30px #000;
+		-webkit-box-shadow:-10px -10px 30px #000;
+		-moz-box-shadow:-10px -10px 30px #000;
+		-ms-box-shadow:-10px -10px 30px #000;
+		-o-box-shadow:-10px -10px 30px #000;
+	}
+}
+
+/* css3 animation for book covers */
+
+.shelf-container li {
+	vertical-align:middle;
+	-webkit-transform:translateZ(0);
+	-moz-transform:translateZ(0);
+	-ms-transform:translateZ(0);
+	-o-transform:translateZ(0);
+	transform:translateZ(0);
+	-webkit-backface-visibility:hidden;
+	-mox-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	-webkit-transition-duration:0.3s;
+	-moz-transition-duration:0.3s;
+	-ms-transition-duration:0.3s;
+	-o-transition-duration:0.3s;
+	transition-duration:0.3s;
+	-webkit-transition-property:transform;
+	-moz-transition-property:transform;
+	-ms-transition-property:transform;
+	-o-transition-property:transform;
+	transition-property:transform;
+	-webkit-transition-timing-function:ease-out;
+	-moz-transition-timing-function:ease-out;
+	-ms-transition-timing-function:ease-out;
+	-o-transition-timing-function:ease-out;
+	transition-timing-function:ease-out;
+}
+.shelf-container li:hover, .shelf-container li:focus {
+	-webkit-transform:translateY(0.75em);
+	-moz-transform:translateY(0.75em);
+	-ms-transform:translateY(0.75em);
+	-o-transform:translateY(0.75em);
+	transform:translateY(0.75em);
+}
