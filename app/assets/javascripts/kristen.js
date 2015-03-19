@@ -14,12 +14,18 @@ $(bookList).each(function() {
 			$(this).children().css('width', ($(this).closest('.shelf-container').width() * 0.5));
 		}
 		if (bookCount < 4) {
-			$(this).children().css('width', ($(this).closest('.shelf-container').width() * 0.2));
+			$(this).children().css('width', ($(this).closest('.shelf-container').width() * 0.25));
 		}
 		if (bookCount >= 4) {
 			$(this).children().css('width', ($(this).closest('.shelf-container').width() * 0.15));
 		}
 	}
+});
+
+$(book).hover(function() {
+	$(this).css('z-index', '200');
+}, function() {
+	$(this).css('z-index', '10');
 });
 
 });

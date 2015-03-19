@@ -17,18 +17,60 @@
 				<!-- the class of float-r will apply a float:right css rule. the class of onethird will apply a rule setting the height to one third of the row height. -->
 				<%= image_tag "toprow/onethird.gif", :class => "container-background" %>
 				<ul>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="shelf-container fulcrum half">
 				<!-- This shelf-container is named fulcrum because the rest of the content in this row will float around this focalpoint. The class of half will set this div to half the height of the container. -->
 				<%= image_tag "toprow/fulcrum.gif", :class => "container-background" %>
 				<ul>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="shelf-container twothird float-r ">
@@ -47,9 +89,30 @@
 				<!-- this is a long short rectangle which is going to be partially overlapped by the square cabinet using the z-indexes. -->
 				<%= image_tag "middlerow/lrg-square_1.gif", :class => "container-background" %>
 				<ul>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="shelf-container sm-rectangle first">
@@ -69,9 +132,30 @@
 					<!-- This is the actual shelf holding the books. -->
 					<%= image_tag "middlerow/upright_2.gif", :class => "container-background" %>
 					<ul>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="zoom-in">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
 				</ul>
 				</div>
 			</div>
@@ -100,22 +184,92 @@
 					<!-- this lrg-rectangle div is bisected making it logical to hold two divs -->
 					<%= image_tag "bottomrow/lrg-rectangle-half.gif", :class => "container-background" %>
 					<ul>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+						<li class="pull-down">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="pull-down">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="pull-down">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="pull-down">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="pull-down">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
 					</ul>
 				</div>
 				<div class="half">
 					<!-- each of these divs are half the height. I think we can re-use the .half class from the first row. -->
 					<%= image_tag "bottomrow/lrg-rectangle-half.gif", :class => "container-background" %>
 					<ul>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-						<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
+						<li class="zoom-in">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="zoom-in">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="zoom-in">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="zoom-in">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
+						<li class="zoom-in">
+							<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+							<div class="book_render">
+								<h1>Book Title</h1>
+								<h4>The subtitle texts</h4>
+								<h6>AUTHOR NAME</h6>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -126,9 +280,25 @@
 			<div class="shelf-container lrg-rectangle">
 				<%= image_tag "bottomrow/lrg-rectangle-full.gif", :class => "container-background" %>
 				<ul>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li>
-					<!-- <li><%= image_tag 'book_cover_template.jpg', :class => 'book_cover' %></li> -->
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+						<div class="book_render">
+							<h1>Book Title</h1>
+							<h4>The subtitle texts</h4>
+							<h6>AUTHOR NAME</h6>
+						</div>
+					</li>
+					<!-- <li class="pull-down">
+						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
+					</li> -->
 				</ul>
 			</div>
 			<div class="shelf-container square-mod_2">
