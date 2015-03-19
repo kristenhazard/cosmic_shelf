@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     
   get 'bookshelf/index'
   get 'bookshelf/kristen'
+  get 'bookshelf/generic'
   post 'bookshelf/get_books'
   match 'bookshelf', to: 'bookshelf#index', via: :all
   root :to => 'bookshelf#kristen'

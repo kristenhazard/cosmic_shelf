@@ -2,6 +2,8 @@ class BookshelfController < ApplicationController
   def index
   end
   
+  def generic
+  end
 
   def kristen
   end
