@@ -10,11 +10,23 @@ $(window).load(function() {
 	textSizr();
 	setZoomIndex();
 
+	$(document).ready(function() {
+		bookSizr();
+		textSizr();
+		setZoomIndex();
+	});
+
 	$(window).resize(function() {
 		bookSizr();
 		textSizr();
 		setZoomIndex();
 	});
+
+	$(window).on('page:change', function() {
+		bookSizr();
+		textSizr();
+		setZoomIndex();
+	})
 
 	/* This works in conjunction with the zoom-in css hover effect. It gives the element a high z-index whilst hovered */
 	function setZoomIndex() {
