@@ -1,20 +1,20 @@
 <div id="wrapper">
 	<section id="bookshelf">
 		<div class="topcap">
-			<%=# This represents the top of the bookshelf unit %>
+			<%# This represents the top of the bookshelf unit %>
 			<%= image_tag 'topcap.gif' %>
 		</div>
 		<div class="cosmic_row toprow">
 			<div class="cabinet tall">
-				<%=# This tall div will set the height of the container. It is also the first "cabinet" we encounter. %>
+				<%# This tall div will set the height of the container. It is also the first "cabinet" we encounter. %>
 				<%= image_tag "toprow/tall.gif", :class => "container-background" %>
 			</div>
 			<div class="cabinet square">
-				<%=# There will be two square cabinets used in the program. This one will float in the left-lower half of the container. %>
+				<%# There will be two square cabinets used in the program. This one will float in the left-lower half of the container. %>
 				<%= image_tag "cabinet_bkgd_1.jpg", :class => "container-background" %>
 			</div>
 			<div class="shelf-container onethird float-r">
-				<%=# the class of float-r will apply a float:right css rule. the class of onethird will apply a rule setting the height to one third of the cosmic_row height. %>
+				<%# the class of float-r will apply a float:right css rule. the class of onethird will apply a rule setting the height to one third of the cosmic_row height. %>
 				<%= image_tag "toprow/onethird.gif", :class => "container-background" %>
 				<ul>
 					<li class="pull-down">
@@ -44,7 +44,7 @@
 				</ul>
 			</div>
 			<div class="shelf-container fulcrum half">
-				<%=# This shelf-container is named fulcrum because the rest of the content in this cosmic_row will float around this focalpoint. The class of half will set this div to half the height of the container. %>
+				<%# This shelf-container is named fulcrum because the rest of the content in this cosmic_row will float around this focalpoint. The class of half will set this div to half the height of the container. %>
 				<%= image_tag "toprow/fulcrum.gif", :class => "container-background" %>
 				<ul>
 					<li class="zoom-in">
@@ -74,19 +74,19 @@
 				</ul>
 			</div>
 			<div class="shelf-container twothird float-r ">
-				<%=# the class of twothird is going to set the height of this div to half of the height of the container. %>
+				<%# the class of twothird is going to set the height of this div to half of the height of the container. %>
 				<%= image_tag "toprow/twothird.gif", :class => "container-background" %>
 			</div>
 			
 			
 			
 			<div class="clear">
-				<%=# Clearing divs will be given the class of clear. %>
+				<%# Clearing divs will be given the class of clear. %>
 			</div>
 		</div>
 		<div class="cosmic_row middlerow">
 			<div class="shelf-container lrg-rectangle">
-				<%=# this is a long short rectangle which is going to be partially overlapped by the square cabinet using the z-indexes. %>
+				<%# this is a long short rectangle which is going to be partially overlapped by the square cabinet using the z-indexes. %>
 				<%= image_tag "middlerow/lrg-square_1.gif", :class => "container-background" %>
 				<ul>
 					<li class="pull-down">
@@ -116,20 +116,20 @@
 				</ul>
 			</div>
 			<div class="shelf-container sm-rectangle first">
-				<%=# small rectangles have a unique size. %>
+				<%# small rectangles have a unique size. %>
 				<%= image_tag "middlerow/sm-rectangle_1.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container sm-rectangle">
 				<%= image_tag "middlerow/sm-rectangle_1.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container upright-rectangle">
-				<%=# The upright-rectangle will hold two divs, onequarter and threequarter giving the illusion of a tall div. %>
+				<%# The upright-rectangle will hold two divs, onequarter and threequarter giving the illusion of a tall div. %>
 				<div class="shelf-container onequarter">
-					<%=# This should be just an empty space above the threequarter div %>
+					<%# This should be just an empty space above the threequarter div %>
 					<%= image_tag "middlerow/upright_1.gif", :class => "container-background" %>
 				</div>
 				<div class="shelf-container threequarter">
-					<%=# This is the actual shelf holding the books. %>
+					<%# This is the actual shelf holding the books. %>
 					<%= image_tag "middlerow/upright_2.gif", :class => "container-background" %>
 					<ul>
 					<li class="zoom-in">
@@ -163,25 +163,25 @@
 		</div>
 		<div class="cosmic_row bottomrow">
 			<div class="shelf-container cabinet tall double-tall">
-				<%=# This div holds two more of the tall cabinet divs. This one is twice the height of the single tall so I thought I would just create a new class giving it double the height. %>
+				<%# This div holds two more of the tall cabinet divs. This one is twice the height of the single tall so I thought I would just create a new class giving it double the height. %>
 				<%= image_tag "bottomrow/double-tall.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container square-mod first">
-				<%=# square-mods are roughly one third the size of the width of the unit. %>
+				<%# square-mods are roughly one third the size of the width of the unit. %>
 				<%= image_tag "bottomrow/square.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container square-mod">
-				<%=# There are six square mods in total. %>
+				<%# There are six square mods in total. %>
 				<%= image_tag "bottomrow/square.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container square-mod">
-				<%=# They are all the exact same dimension and need no special setup. %>
+				<%# They are all the exact same dimension and need no special setup. %>
 				<%= image_tag "bottomrow/square.gif", :class => "container-background" %>
 			</div>
 			<div class="shelf-container lrg-rectangle">
-				<%=# This div appears to be the same size as the other lrg-rectangle div %>
+				<%# This div appears to be the same size as the other lrg-rectangle div %>
 				<div class="half">
-					<%=# this lrg-rectangle div is bisected making it logical to hold two divs %>
+					<%# this lrg-rectangle div is bisected making it logical to hold two divs %>
 					<%= image_tag "bottomrow/lrg-rectangle-half.gif", :class => "container-background" %>
 					<ul>
 						<li class="pull-down">
@@ -227,7 +227,7 @@
 					</ul>
 				</div>
 				<div class="half">
-					<%=# each of these divs are half the height. I think we can re-use the .half class from the first row. %>
+					<%# each of these divs are half the height. I think we can re-use the .half class from the first row. %>
 					<%= image_tag "bottomrow/lrg-rectangle-half.gif", :class => "container-background" %>
 					<ul>
 						<li class="zoom-in">
@@ -274,7 +274,7 @@
 				</div>
 			</div>
 			<div class="shelf-container cabinet square">
-				<%=# The second square cabinet %>
+				<%# The second square cabinet %>
 				<%= image_tag "cabinet_bkgd_2.png", :class => "container-background" %>
 			</div>
 			<div class="shelf-container lrg-rectangle">
@@ -296,9 +296,7 @@
 							<h6>AUTHOR NAME</h6>
 						</div>
 					</li>
-					<%=# <li class="pull-down">
-						<%= image_tag 'book_shape.gif', :class => 'book_cover' %>
-					</li> %>
+					
 				</ul>
 			</div>
 			<div class="shelf-container square-mod_2">
@@ -307,7 +305,7 @@
 			<div class="clear"></div>
 		</div>
 		<div class="bottomcap">
-			<%=# this represents the lower cap of the bookshelf unit %>
+			<%# this represents the lower cap of the bookshelf unit %>
 			<%= image_tag 'bottomcap.gif' %>
 		</div>
 	</section>

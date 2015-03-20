@@ -1,9 +1,12 @@
 $(document).ready( function() {
 
+/* Variables for cosmic bookshelf */
+
 var shelf = $('.shelf-container');
 var bookList = $('.shelf-container ul');
-var book = $('.shelf-container ul li');
+var book = $('.shelf-container li');
 var containerWidth = book.closest(shelf).width() * 0.2;
+
 
 /* size books according to book count in relation to shelf width */
 
@@ -35,7 +38,8 @@ $(book).hover(function() {
 });
 
 $(window).load(function() {
-$('.shelf-container li').each(function() {
+var book = $('.shelf-container li');
+$(book).each(function() {
 	var bookHeight = $(this).height();
 	var titleSize = bookHeight * 0.15;
 	var subtitleSize = bookHeight * 0.075;
